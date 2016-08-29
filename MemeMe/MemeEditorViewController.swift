@@ -10,10 +10,19 @@ import UIKit
 
 class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var sourceType: UIImagePickerControllerSourceType = UIImagePickerControllerSourceType.Camera
+    let DefaultTopText = "TOP"
+    let DefaultBottomText = "BOTTOM"
+    let memeTextAttributes = [
+        NSStrokeColorAttributeName : UIColor.blackColor(),
+        NSForegroundColorAttributeName : UIColor.whiteColor(),
+        NSBackgroundColorAttributeName : UIColor.clearColor(),
+        NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+        NSStrokeWidthAttributeName : NSNumber.FloatLiteralType(-2)     ]
     
-//    let UIImagePickerControllerOriginalImage: String
+
     // MARK: outlets
     @IBOutlet weak var cameraButton: UIBarButtonItem!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var imagePickerView: UIImageView!
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
@@ -22,8 +31,14 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         
         super.viewWillAppear(true)
         
-        // Disable camera button if device has no camera.
+        // Disable share button & camera button if device has no camera.
         cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+        if imagePickerView.image == nil {
+            shareButton.enabled = false
+        }
+        topTextField.defaultTextAttributes = memeTextAttributes
+        bottomTextField.defaultTextAttributes = memeTextAttributes
+        
     }
 
     
@@ -37,12 +52,19 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func cancel(sender: AnyObject) {
+        print("dismissing view controller")
+        topTextField.text = nil
+        bottomTextField.text = nil
+        imagePickerView.image = nil
+    }
    // MARK: Photo functions
     func imagePickerController(picker: UIImagePickerController,
                                  didFinishPickingMediaWithInfo info: [String : AnyObject]){
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            imagePickerView.image = image }
-        
+            imagePickerView.image = image
+        }
+        shareButton.enabled = true
         dismissViewControllerAnimated(true, completion: nil)
         
     }
@@ -67,6 +89,15 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         
 
     }
+    
+    @IBAction func share(sender: UIBarButtonItem) {
+        print("share button selected")
+    }
+
+    // MARK: Text functions
+
+    func textFieldDidBeginEditing(textField: UITextField) {
+        print(textField.hasText(),textField.description, textField.placeholder)  }
 
 }
 
