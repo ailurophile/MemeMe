@@ -12,6 +12,8 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     var sourceType: UIImagePickerControllerSourceType = UIImagePickerControllerSourceType.Camera
     let DefaultTopText = "TOP"
     let DefaultBottomText = "BOTTOM"
+    var editingBottomTextField: Bool = false
+    var viewShift: CGFloat = 0.0
     let memeTextAttributes = [
         NSStrokeColorAttributeName : UIColor.blackColor(),
         NSForegroundColorAttributeName : UIColor.whiteColor(),
@@ -27,6 +29,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
     
+    // MARK: Navigation
     override func viewWillAppear(animated: Bool) {
         
         super.viewWillAppear(true)
@@ -38,6 +41,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         }
         topTextField.defaultTextAttributes = memeTextAttributes
         bottomTextField.defaultTextAttributes = memeTextAttributes
+        subscribeToKeyboardNotifications()
         
     }
 
@@ -52,12 +56,23 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        unsubscribeFromKeyboardNotifications()
+    }
+    
     @IBAction func cancel(sender: AnyObject) {
         print("dismissing view controller")
         topTextField.text = nil
         bottomTextField.text = nil
         imagePickerView.image = nil
+        view.frame.origin.y = 0.0
     }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
    // MARK: Photo functions
     func imagePickerController(picker: UIImagePickerController,
                                  didFinishPickingMediaWithInfo info: [String : AnyObject]){
@@ -97,7 +112,62 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     // MARK: Text functions
 
     func textFieldDidBeginEditing(textField: UITextField) {
-        print(textField.hasText(),textField.description, textField.placeholder)  }
+/*        print(textField.hasText(),textField.description, textField.placeholder)
+        print(textField.placeholder)
+        print(DefaultBottomText)
+        */
+        editingBottomTextField = (textField.placeholder == DefaultBottomText)
+        print(editingBottomTextField)
+    }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        return true;
+    }
+    
+    func subscribeToKeyboardNotifications(){
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIKeyboardWillChangeFrameNotification, object: nil)
+    }
+    func unsubscribeFromKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillChangeFrameNotification, object: nil)
+    }
+    func keyboardWillShow(notification: NSNotification){
+ //       print(notification.userInfo)
+        print("editing bottom text field = \(editingBottomTextField)")
+        if editingBottomTextField {
+            viewShift = getKeyboardHeight(notification)
+            view.frame.origin.y = viewShift*(-1.0)
+        }
+    }
+    func keyboardWillHide(notification: NSNotification){
+        print("inside keyboard will hide method editing bottom text field = \(editingBottomTextField)")
+        if editingBottomTextField {
+            viewShift = 0.0
+            view.frame.origin.y = viewShift
+            
+        }
+    }
+    func keyboardWillChangeFrame(notification: NSNotification){
+        print("inside keyboard will change frame method editing bottom text field = \(editingBottomTextField)")
+        if editingBottomTextField {
+            let height = getKeyboardHeight(notification)
+            if height != viewShift{
+                viewShift = height
+                view.frame.origin.y = viewShift
+            
+            }
+        }
+    }
+    
+    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
+        return keyboardSize.CGRectValue().height
+    }
 
 }
 
