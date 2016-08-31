@@ -43,7 +43,7 @@
                                 <items>
                                     <barButtonItem systemItem="action" id="0gB-RF-M4o">
                                         <connections>
-                                            <action selector="share:" destination="BYZ-38-t0r" id="wgw-Ko-ufR"/>
+                                            <action selector="share:" destination="BYZ-38-t0r" id="lB7-Fq-a8g"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="3hl-WA-Aue"/>
@@ -62,6 +62,11 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderLabel.textColor">
+                                        <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="t50-9O-iPM"/>
                                 </connections>
@@ -71,6 +76,11 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderLabel.textColor">
+                                        <color key="value" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="7O3-LO-83W"/>
                                 </connections>
@@ -96,10 +106,12 @@
                     </view>
                     <connections>
                         <outlet property="bottomTextField" destination="9ML-9K-7NX" id="ki8-yw-mjv"/>
+                        <outlet property="bottomToolbar" destination="zam-KH-T12" id="F1N-tE-if4"/>
                         <outlet property="cameraButton" destination="gMh-wk-NxL" id="HBc-jk-Ewf"/>
                         <outlet property="imagePickerView" destination="6Un-gK-RZk" id="pri-hI-zzd"/>
                         <outlet property="shareButton" destination="0gB-RF-M4o" id="Kav-Vq-jRd"/>
                         <outlet property="topTextField" destination="fV5-wp-rRJ" id="uV6-bS-rqb"/>
+                        <outlet property="topToolbar" destination="fuS-bK-0gt" id="NpV-3D-XBP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

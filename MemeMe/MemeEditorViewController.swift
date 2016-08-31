@@ -14,6 +14,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     let DefaultBottomText = "BOTTOM"
     var editingBottomTextField: Bool = false
     var viewShift: CGFloat = 0.0
+    var memedImage: UIImage?
     let memeTextAttributes = [
         NSStrokeColorAttributeName : UIColor.blackColor(),
         NSForegroundColorAttributeName : UIColor.whiteColor(),
@@ -28,6 +29,8 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     @IBOutlet weak var imagePickerView: UIImageView!
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
+    @IBOutlet weak var topToolbar: UIToolbar!
+    @IBOutlet weak var bottomToolbar: UIToolbar!
     
     // MARK: Navigation
     override func viewWillAppear(animated: Bool) {
@@ -46,23 +49,12 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     }
 
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         unsubscribeFromKeyboardNotifications()
     }
     
     @IBAction func cancel(sender: AnyObject) {
-        print("dismissing view controller")
         topTextField.text = nil
         bottomTextField.text = nil
         imagePickerView.image = nil
@@ -105,20 +97,9 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
 
     }
     
-    @IBAction func share(sender: UIBarButtonItem) {
-        print("share button selected")
-    }
 
     // MARK: Text functions
 
-    func textFieldDidBeginEditing(textField: UITextField) {
-/*        print(textField.hasText(),textField.description, textField.placeholder)
-        print(textField.placeholder)
-        print(DefaultBottomText)
-        */
-        editingBottomTextField = (textField.placeholder == DefaultBottomText)
-        print(editingBottomTextField)
-    }
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         
@@ -126,39 +107,32 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     }
     
     func subscribeToKeyboardNotifications(){
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIKeyboardWillChangeFrameNotification, object: nil)
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillMove), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillMove), name: UIKeyboardWillChangeFrameNotification, object: nil)
     }
     func unsubscribeFromKeyboardNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillChangeFrameNotification, object: nil)
     }
-    func keyboardWillShow(notification: NSNotification){
- //       print(notification.userInfo)
-        print("editing bottom text field = \(editingBottomTextField)")
-        if editingBottomTextField {
-            viewShift = getKeyboardHeight(notification)
-            view.frame.origin.y = viewShift*(-1.0)
+    func keyboardWillMove(notification: NSNotification){
+        if !editingBottomTextField{
+            return
         }
-    }
-    func keyboardWillHide(notification: NSNotification){
-        print("inside keyboard will hide method editing bottom text field = \(editingBottomTextField)")
-        if editingBottomTextField {
+        if notification.name == UIKeyboardWillHideNotification {
+
             viewShift = 0.0
             view.frame.origin.y = viewShift
-            
+
         }
-    }
-    func keyboardWillChangeFrame(notification: NSNotification){
-        print("inside keyboard will change frame method editing bottom text field = \(editingBottomTextField)")
-        if editingBottomTextField {
+        else {
+
             let height = getKeyboardHeight(notification)
             if height != viewShift{
                 viewShift = height
-                view.frame.origin.y = viewShift
-            
+                view.frame.origin.y = viewShift*(-1.0)
+
             }
         }
     }
@@ -168,6 +142,37 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
         return keyboardSize.CGRectValue().height
     }
+    // MARK: Meme functions
+    func save()  {
+        
+        let topText = topTextField.text ?? ""
+        let bottomText = bottomTextField.text ?? ""
+        let meme = Meme(topText: topText, bottomText: bottomText, originalImage: imagePickerView.image!, memedImage: memedImage!)
+    }
+    
+    func generateMemedImage()-> UIImage{
+        hideToolbars(true)
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        view.drawViewHierarchyInRect(self.view.frame,
+                                     afterScreenUpdates: true)
+        let memedImage : UIImage =
+            UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        hideToolbars(false)
+        return memedImage
+        
+        
+    }
+    func hideToolbars(hide: Bool){
+        topToolbar.hidden = hide
+        bottomToolbar.hidden = hide
+    }
 
+    @IBAction func share(sender: UIBarButtonItem) {
+        memedImage = generateMemedImage()
+        let activityController = UIActivityViewController(activityItems: [memedImage!], applicationActivities: nil)
+        self.presentViewController(activityController, animated: true, completion: save)
+        
+    }
 }
 
