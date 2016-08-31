@@ -13,6 +13,7 @@
 		D7C46C701D749F08006899E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7C46C6F1D749F08006899E8 /* Assets.xcassets */; };
 		D7C46C731D749F08006899E8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7C46C711D749F08006899E8 /* LaunchScreen.storyboard */; };
 		D7C46C7B1D76476D006899E8 /* Meme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C46C7A1D76476D006899E8 /* Meme.swift */; };
+		D7C46C7D1D76728A006899E8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D7C46C7C1D76728A006899E8 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		D7C46C721D749F08006899E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D7C46C741D749F08006899E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7C46C7A1D76476D006899E8 /* Meme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Meme.swift; sourceTree = "<group>"; };
+		D7C46C7C1D76728A006899E8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				D7C46C711D749F08006899E8 /* LaunchScreen.storyboard */,
 				D7C46C741D749F08006899E8 /* Info.plist */,
 				D7C46C7A1D76476D006899E8 /* Meme.swift */,
+				D7C46C7C1D76728A006899E8 /* README.md */,
 			);
 			path = MemeMe;
 			sourceTree = "<group>";
@@ -125,6 +128,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7C46C7D1D76728A006899E8 /* README.md in Resources */,
 				D7C46C731D749F08006899E8 /* LaunchScreen.storyboard in Resources */,
 				D7C46C701D749F08006899E8 /* Assets.xcassets in Resources */,
 				D7C46C6E1D749F08006899E8 /* Main.storyboard in Resources */,
