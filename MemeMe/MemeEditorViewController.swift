@@ -99,6 +99,9 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     
 
     // MARK: Text functions
+    func textFieldDidBeginEditing(textField: UITextField) {
+        editingBottomTextField = (textField.placeholder == DefaultBottomText)
+    }
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
