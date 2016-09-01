@@ -45,6 +45,8 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         topTextField.defaultTextAttributes = memeTextAttributes
         bottomTextField.defaultTextAttributes = memeTextAttributes
         subscribeToKeyboardNotifications()
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        
         
     }
 
@@ -60,6 +62,9 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         imagePickerView.image = nil
         view.frame.origin.y = 0.0
     }
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
@@ -68,7 +73,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
    // MARK: Photo functions
     func imagePickerController(picker: UIImagePickerController,
                                  didFinishPickingMediaWithInfo info: [String : AnyObject]){
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
             imagePickerView.image = image
         }
         shareButton.enabled = true
@@ -92,6 +97,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         }
         
         imagePickerController.sourceType = sourceType
+        imagePickerController.allowsEditing = true
         presentViewController(imagePickerController, animated: true, completion: nil)
         
 
