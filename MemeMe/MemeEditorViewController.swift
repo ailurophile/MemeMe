@@ -8,13 +8,15 @@
 
 import UIKit
 
-class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, FontSelectorDelegate {
     var sourceType: UIImagePickerControllerSourceType = UIImagePickerControllerSourceType.Camera
     let DefaultTopText = "TOP"
     let DefaultBottomText = "BOTTOM"
     var editingBottomTextField: Bool = false
     var viewShift: CGFloat = 0.0
     var memedImage: UIImage?
+    
+//    var desiredFont: String = "HelveticaNeue-CondensedBlack"
     let memeTextAttributes = [
         NSStrokeColorAttributeName : UIColor.blackColor(),
         NSForegroundColorAttributeName : UIColor.whiteColor(),
@@ -44,9 +46,10 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         }
         topTextField.defaultTextAttributes = memeTextAttributes
         bottomTextField.defaultTextAttributes = memeTextAttributes
+//        topTextField.font = UIFont(name: desiredFont, size: 40)
         subscribeToKeyboardNotifications()
         self.navigationController?.setNavigationBarHidden(true, animated: true)
-        
+        print("i'm appearing!")
         
     }
 
@@ -64,6 +67,16 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     }
     override func prefersStatusBarHidden() -> Bool {
         return true
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let controller = segue.destinationViewController as! FontViewController
+        print("segue identifier: \(segue.identifier)")
+        
+        if segue.identifier == "selectFont"{
+            
+            controller.delegate = self
+        }
+        
     }
     
     deinit {
@@ -113,6 +126,15 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         textField.resignFirstResponder()
         
         return true;
+    }
+    func updateFont(selector: FontSelector, shouldUseNewFont font: String) {
+        print(font)
+        let size = topTextField.font?.pointSize ?? 17.0
+        let text = topTextField.text
+        topTextField.font = UIFont(name: font, size: size)
+        topTextField.text = text
+        print(text)
+        print(topTextField.font)
     }
     
     func subscribeToKeyboardNotifications(){

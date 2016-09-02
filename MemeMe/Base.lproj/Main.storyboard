@@ -29,7 +29,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="3hl-WA-Aue"/>
                                     <barButtonItem title="Fonts" id="OXI-Iy-qoU">
                                         <connections>
-                                            <segue destination="Z2Y-2K-Qns" kind="show" id="nyO-oF-HKA"/>
+                                            <segue destination="Z2Y-2K-Qns" kind="show" identifier="selectFont" id="nyO-oF-HKA"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="WO8-vd-GgM"/>
