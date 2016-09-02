@@ -7,16 +7,18 @@
 //
 
 import UIKit
+let DefaultFontSize = CGFloat(17.0)
 
-class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, FontSelectorDelegate {
+class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,  FontSelectorDelegate {
     var sourceType: UIImagePickerControllerSourceType = UIImagePickerControllerSourceType.Camera
     let DefaultTopText = "TOP"
     let DefaultBottomText = "BOTTOM"
     var editingBottomTextField: Bool = false
     var viewShift: CGFloat = 0.0
     var memedImage: UIImage?
+    var desiredFont: UIFont = UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!
     
-//    var desiredFont: String = "HelveticaNeue-CondensedBlack"
+
     let memeTextAttributes = [
         NSStrokeColorAttributeName : UIColor.blackColor(),
         NSForegroundColorAttributeName : UIColor.whiteColor(),
@@ -45,11 +47,12 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
             shareButton.enabled = false
         }
         topTextField.defaultTextAttributes = memeTextAttributes
+        topTextField.font = desiredFont
         bottomTextField.defaultTextAttributes = memeTextAttributes
-//        topTextField.font = UIFont(name: desiredFont, size: 40)
+        bottomTextField.font = desiredFont
+
         subscribeToKeyboardNotifications()
         self.navigationController?.setNavigationBarHidden(true, animated: true)
-        print("i'm appearing!")
         
     }
 
@@ -70,7 +73,6 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let controller = segue.destinationViewController as! FontViewController
-        print("segue identifier: \(segue.identifier)")
         
         if segue.identifier == "selectFont"{
             
@@ -128,14 +130,11 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         return true;
     }
     func updateFont(selector: FontSelector, shouldUseNewFont font: String) {
-        print(font)
-        let size = topTextField.font?.pointSize ?? 17.0
-        let text = topTextField.text
-        topTextField.font = UIFont(name: font, size: size)
-        topTextField.text = text
-        print(text)
-        print(topTextField.font)
+        let size = topTextField.font?.pointSize ?? DefaultFontSize
+        desiredFont = UIFont(name: font, size: size)!
+
     }
+
     
     func subscribeToKeyboardNotifications(){
 

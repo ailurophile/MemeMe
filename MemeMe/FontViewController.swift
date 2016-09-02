@@ -21,7 +21,7 @@ class FontViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var fonts: [String] = UIFont.familyNames()
     var font:String = ""
     var delegate : FontSelectorDelegate?
-@IBOutlet weak var topTextField: UITextField!
+    @IBOutlet weak var topTextField: UITextField!
     
     override func viewWillAppear(animated: Bool) {
         
@@ -45,7 +45,7 @@ class FontViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         // Set the name and font
         cell.textLabel?.text = font
-        let size = cell.textLabel?.font.pointSize ?? 17.0
+        let size = cell.textLabel?.font.pointSize ?? DefaultFontSize
         cell.textLabel?.font = UIFont(name: font, size: size)
         return cell
     }
@@ -59,12 +59,8 @@ class FontViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         font = fonts[indexPath.row]
-        print("\(font) selected delegate is: \(delegate)")
         delegate?.updateFont(self, shouldUseNewFont: font)
         
-//        let presentingVC = self.presentingViewController
- //       print(presentingVC!.title)
-//        presentingVC.desiredFont = font
         self.navigationController?.popViewControllerAnimated(true)
         
         
