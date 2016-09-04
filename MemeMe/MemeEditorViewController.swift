@@ -7,7 +7,7 @@
 //
 
 import UIKit
-let DefaultFontSize = CGFloat(17.0)
+let DefaultFontSize = CGFloat(17.0) // only used to prevent unwrapping optionals with a ! (Just a compiler satisfier)
 
 class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,  FontSelectorDelegate {
     var sourceType: UIImagePickerControllerSourceType = UIImagePickerControllerSourceType.Camera
@@ -17,17 +17,13 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     var viewShift: CGFloat = 0.0
     var memedImage: UIImage?
     var desiredFont: UIFont = UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!
+    var originalImage: UIImage?
+    
     
 
-    let memeTextAttributes = [
-        NSStrokeColorAttributeName : UIColor.blackColor(),
-        NSForegroundColorAttributeName : UIColor.whiteColor(),
-        NSBackgroundColorAttributeName : UIColor.clearColor(),
-        NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-        NSStrokeWidthAttributeName : NSNumber.FloatLiteralType(-2)     ]
     
-
     // MARK: outlets
+    
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var imagePickerView: UIImageView!
@@ -35,28 +31,40 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     @IBOutlet weak var bottomTextField: UITextField!
     @IBOutlet weak var topToolbar: UIToolbar!
     @IBOutlet weak var bottomToolbar: UIToolbar!
+    @IBOutlet weak var uncropButton: UIBarButtonItem!
     
     // MARK: Navigation
+    
     override func viewWillAppear(animated: Bool) {
         
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         
-        // Disable share button & camera button if device has no camera.
+        // Disable share button & camera button if device has no camera. 
         cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
         if imagePickerView.image == nil {
             shareButton.enabled = false
+            uncropButton.enabled = false
         }
-        topTextField.defaultTextAttributes = memeTextAttributes
-        topTextField.font = desiredFont
-        bottomTextField.defaultTextAttributes = memeTextAttributes
-        bottomTextField.font = desiredFont
-
+        // set text attributes
+        prepareTextField(topTextField)
+        prepareTextField(bottomTextField)
+        
         subscribeToKeyboardNotifications()
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        navigationController?.setNavigationBarHidden(true, animated: true)
         
     }
-
     
+    func prepareTextField(textField: UITextField){
+        let memeTextAttributes = [
+            NSStrokeColorAttributeName : UIColor.blackColor(),
+            NSForegroundColorAttributeName : UIColor.whiteColor(),
+            NSBackgroundColorAttributeName : UIColor.clearColor(),
+            NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+            NSStrokeWidthAttributeName : NSNumber.FloatLiteralType(-2)     ]
+        textField.defaultTextAttributes = memeTextAttributes
+        textField.font = desiredFont
+    }
+
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         unsubscribeFromKeyboardNotifications()
@@ -68,9 +76,11 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         imagePickerView.image = nil
         view.frame.origin.y = 0.0
     }
+    
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let controller = segue.destinationViewController as! FontViewController
         
@@ -91,10 +101,13 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
             imagePickerView.image = image
         }
+        originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         shareButton.enabled = true
+        uncropButton.enabled = true
         dismissViewControllerAnimated(true, completion: nil)
         
     }
+    
     func imagePickerControllerDidCancel(picker: UIImagePickerController){
         dismissViewControllerAnimated(true, completion: nil)
 
@@ -118,8 +131,14 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
 
     }
     
+    @IBAction func uncropImage(sender: UIBarButtonItem) {
+        if (originalImage != nil) {
+            imagePickerView.image = originalImage
+        }
+    }
 
     // MARK: Text functions
+    
     func textFieldDidBeginEditing(textField: UITextField) {
         editingBottomTextField = (textField.placeholder == DefaultBottomText)
     }
@@ -129,6 +148,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         
         return true;
     }
+    
     func updateFont(selector: FontSelector, shouldUseNewFont font: String) {
         let size = topTextField.font?.pointSize ?? DefaultFontSize
         desiredFont = UIFont(name: font, size: size)!
@@ -141,11 +161,13 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillMove), name: UIKeyboardWillHideNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillMove), name: UIKeyboardWillChangeFrameNotification, object: nil)
     }
+    
     func unsubscribeFromKeyboardNotifications() {
 
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillChangeFrameNotification, object: nil)
     }
+    
     func keyboardWillMove(notification: NSNotification){
         if !editingBottomTextField{
             return
@@ -173,6 +195,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         return keyboardSize.CGRectValue().height
     }
     // MARK: Meme functions
+    
     func save()  {
         
         let topText = topTextField.text ?? ""
@@ -182,8 +205,8 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     
     func generateMemedImage()-> UIImage{
         hideToolbars(true)
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        view.drawViewHierarchyInRect(self.view.frame,
+        UIGraphicsBeginImageContext(view.frame.size)
+        view.drawViewHierarchyInRect(view.frame,
                                      afterScreenUpdates: true)
         let memedImage : UIImage =
             UIGraphicsGetImageFromCurrentImageContext()
@@ -193,6 +216,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         
         
     }
+    
     func hideToolbars(hide: Bool){
         topToolbar.hidden = hide
         bottomToolbar.hidden = hide
@@ -201,7 +225,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     @IBAction func share(sender: UIBarButtonItem) {
         memedImage = generateMemedImage()
         let activityController = UIActivityViewController(activityItems: [memedImage!], applicationActivities: nil)
-        self.presentViewController(activityController, animated: true, completion: save)
+        presentViewController(activityController, animated: true, completion: save)
         
     }
 }

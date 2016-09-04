@@ -26,7 +26,7 @@ class FontViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewWillAppear(animated: Bool) {
         
         super.viewWillAppear(true)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.setNavigationBarHidden(false, animated: true)
        
     }
 
@@ -34,14 +34,14 @@ class FontViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        
-      return self.fonts.count
+      return fonts.count
         
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("FontCell")!
-        font = self.fonts[indexPath.row]
+        font = fonts[indexPath.row]
 
         // Set the name and font
         cell.textLabel?.text = font
@@ -61,7 +61,7 @@ class FontViewController: UIViewController, UITableViewDataSource, UITableViewDe
         font = fonts[indexPath.row]
         delegate?.updateFont(self, shouldUseNewFont: font)
         
-        self.navigationController?.popViewControllerAnimated(true)
+        navigationController?.popViewControllerAnimated(true)
         
         
     }
