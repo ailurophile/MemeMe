@@ -201,6 +201,10 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         let topText = topTextField.text ?? ""
         let bottomText = bottomTextField.text ?? ""
         let meme = Meme(topText: topText, bottomText: bottomText, originalImage: imagePickerView.image!, memedImage: memedImage!)
+        let object = UIApplication.sharedApplication().delegate
+        let appDelegate = object as! AppDelegate
+        appDelegate.memes.append(meme)
+        print(appDelegate.memes.count)
     }
     
     func generateMemedImage()-> UIImage{
