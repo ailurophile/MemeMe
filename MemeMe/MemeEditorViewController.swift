@@ -75,6 +75,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         bottomTextField.text = nil
         imagePickerView.image = nil
         view.frame.origin.y = 0.0
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     override func prefersStatusBarHidden() -> Bool {
@@ -204,7 +205,12 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         let object = UIApplication.sharedApplication().delegate
         let appDelegate = object as! AppDelegate
         appDelegate.memes.append(meme)
-        print(appDelegate.memes.count)
+/*        print(appDelegate.memes.count)
+        for each in appDelegate.memes{
+            print(each.topText,each.bottomText,each.memedImage)
+        } */
+//        dismissViewControllerAnimated(true, completion: nil)
+
     }
     
     func generateMemedImage()-> UIImage{
@@ -229,7 +235,18 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     @IBAction func share(sender: UIBarButtonItem) {
         memedImage = generateMemedImage()
         let activityController = UIActivityViewController(activityItems: [memedImage!], applicationActivities: nil)
-        presentViewController(activityController, animated: true, completion: save)
+        activityController.completionWithItemsHandler = {(activityType, completed:Bool, returnedItems:[AnyObject]?, error: NSError?) in
+            // Return if cancelled             
+            if (!completed) {
+                return
+            }
+            //activity complete
+            self.save()
+            self.dismissViewControllerAnimated(true, completion: nil)
+            
+        }
+        presentViewController(activityController, animated: true, completion: nil)
+//        dismissViewControllerAnimated(true, completion: nil)
         
     }
 }
