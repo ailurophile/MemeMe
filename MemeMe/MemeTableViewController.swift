@@ -12,27 +12,27 @@ import UIKit
 class MemeTableViewController: UITableViewController, UINavigationControllerDelegate {
     private let reuseIdentifier = "MemeTableViewCell"
     var memes: [Meme]!
-
+   // MARK: Navigation
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
- /*       let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reloadMemes), name: newMemeNotificationKey, object: nil)
+       let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         memes = appDelegate.memes
-        self.tableView.reloadData()
+   /*      self.tableView.reloadData()
         print(memes.count)
         for each in memes{
             print(each.topText,each.bottomText,each.memedImage)
         }*/
     }
-    override func viewWillAppear(animated: Bool) {
-        
-    
+/*    override func viewWillAppear(animated: Bool) {
+  
         super.viewWillAppear(animated)
         
         // Uncomment the following line to preserve selection between presentations
@@ -41,13 +41,29 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
 //        self.navigationItem.leftBarButtonItem = self.editButtonItem()
 //        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
+        
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         memes = appDelegate.memes
-        self.tableView.reloadData()
+//        self.tableView.reloadData()
+        
+ /*       ***take out
+        NSNotificationCenter.defaultCenter().addObserverForName(nil,                                                    object: nil,                                                     queue: nil) {                                                       note in     print(note.name + "\r\n")   }
+        */
         print(memes.count)
         for each in memes{
             print(each.topText,each.bottomText,each.memedImage)
         }
+    }
+    
+ */
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: newMemeNotificationKey, object: nil)
+        
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     override func didReceiveMemoryWarning() {
@@ -75,6 +91,12 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
         cell.imageView?.image = memes[indexPath.item].memedImage
 
         return cell
+    }
+    
+    func reloadMemes(){
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        memes = appDelegate.memes
+        self.tableView.reloadData()
     }
 
     func presentMemeEditor(){
@@ -126,10 +148,10 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+    *
     func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
         navigationController.viewWillAppear(animated)
 
-    }
+    }*/
 
 }

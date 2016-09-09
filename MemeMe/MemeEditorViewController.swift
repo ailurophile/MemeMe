@@ -7,6 +7,8 @@
 //
 
 import UIKit
+// globals
+let newMemeNotificationKey = "LisaLitchfield.newMemeNotificationKey"
 let DefaultFontSize = CGFloat(17.0) // only used to prevent unwrapping optionals with a ! (Just a compiler satisfier)
 
 class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,  FontSelectorDelegate {
@@ -205,6 +207,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         let object = UIApplication.sharedApplication().delegate
         let appDelegate = object as! AppDelegate
         appDelegate.memes.append(meme)
+        NSNotificationCenter.defaultCenter().postNotificationName(newMemeNotificationKey, object: self)
 /*        print(appDelegate.memes.count)
         for each in appDelegate.memes{
             print(each.topText,each.bottomText,each.memedImage)
