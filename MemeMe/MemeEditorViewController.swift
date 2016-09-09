@@ -208,10 +208,10 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         let appDelegate = object as! AppDelegate
         appDelegate.memes.append(meme)
         NSNotificationCenter.defaultCenter().postNotificationName(newMemeNotificationKey, object: self)
-/*        print(appDelegate.memes.count)
+        print(appDelegate.memes.count)
         for each in appDelegate.memes{
             print(each.topText,each.bottomText,each.memedImage)
-        } */
+        } 
 //        dismissViewControllerAnimated(true, completion: nil)
 
     }

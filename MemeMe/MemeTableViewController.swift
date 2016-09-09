@@ -22,6 +22,7 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
 
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reloadMemes), name: newMemeNotificationKey, object: nil)
        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         memes = appDelegate.memes
@@ -58,7 +59,7 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
  */
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: newMemeNotificationKey, object: nil)
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name: newMemeNotificationKey, object: nil)
         
     }
     
@@ -94,6 +95,7 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
     }
     
     func reloadMemes(){
+        print("got notification")
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         memes = appDelegate.memes
         self.tableView.reloadData()

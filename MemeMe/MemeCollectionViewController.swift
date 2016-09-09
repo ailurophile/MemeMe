@@ -22,10 +22,11 @@ class MemeCollectionViewController: UICollectionViewController,UINavigationContr
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
-        // Register cell classes
-        self.collectionView!.registerClass(MemeCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        // Register cell classes & notifications
+//        self.collectionView!.registerClass(MemeCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reloadMemes), name: newMemeNotificationKey, object: nil)
 
-        // Do any additional setup after loading the view.
+        // create buttons and load data
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
 
@@ -33,11 +34,22 @@ class MemeCollectionViewController: UICollectionViewController,UINavigationContr
         memes = appDelegate.memes
     }
     
-    override func viewWillAppear(animated: Bool) {
+/*   override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        memes = appDelegate.memes
         self.collectionView?.reloadData()
     }
 
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name: newMemeNotificationKey, object: nil)
+        
+    }*/
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
     
     func presentMemeEditor(){
         let editorViewController = storyboard?.instantiateViewControllerWithIdentifier("MemeEditor") as! MemeEditorViewController
@@ -63,9 +75,18 @@ class MemeCollectionViewController: UICollectionViewController,UINavigationContr
     
         // Configure the cell
         cell.imageView?.image = memes[indexPath.item].memedImage
+        print("top text of memed image: \(memes[indexPath.item].topText)")
     
         return cell
     }
+    
+    func reloadMemes(){
+        print("collection view got notification")
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        memes = appDelegate.memes
+        self.collectionView?.reloadData()
+    }
+
 
     // MARK: UICollectionViewDelegate
 
