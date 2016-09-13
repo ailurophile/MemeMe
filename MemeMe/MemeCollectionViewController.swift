@@ -13,6 +13,7 @@ private let reuseIdentifier = "MemeCell"
 
 class MemeCollectionViewController: UICollectionViewController,UINavigationControllerDelegate {
     var memes: [Meme]!
+    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
      // MARK: - Navigation
     
@@ -32,20 +33,26 @@ class MemeCollectionViewController: UICollectionViewController,UINavigationContr
 
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         memes = appDelegate.memes
+        
+        
     }
     
-/*   override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        memes = appDelegate.memes
-        self.collectionView?.reloadData()
+    // set up flow layout
+    configureFlowLayout(view.frame.size)
+    
     }
 
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        print("adjusting to width: \(size.width) height: \(size.height)")
+        configureFlowLayout(size)
+    }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
 //        NSNotificationCenter.defaultCenter().removeObserver(self, name: newMemeNotificationKey, object: nil)
         
-    }*/
+    }
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
@@ -85,6 +92,25 @@ class MemeCollectionViewController: UICollectionViewController,UINavigationContr
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         memes = appDelegate.memes
         self.collectionView?.reloadData()
+    }
+    
+    func configureFlowLayout( size: CGSize){
+        let space: CGFloat = 3.0
+        let width = size.width
+        let height = size.height
+        var dimension = (width - (2*space))/3.0
+        if width > height {
+            dimension = (width - (5 * space))/6.0
+        }
+        
+
+        print( "width = \(width) height = \(height) dimension = \(dimension)")
+
+        
+        
+        flowLayout?.minimumLineSpacing = space
+        flowLayout?.minimumInteritemSpacing = space
+        flowLayout?.itemSize = CGSizeMake(dimension,dimension)
     }
 
 
