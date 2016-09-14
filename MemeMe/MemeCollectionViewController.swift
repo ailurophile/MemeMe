@@ -20,15 +20,12 @@ class MemeCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
         // Register for notifications
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reloadMemes), name: newMemeNotificationKey, object: nil)
 
         // create buttons and load data
-        self.navigationItem.leftBarButtonItem = self.editButtonItem()
+//        self.navigationItem.leftBarButtonItem = self.editButtonItem()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
 
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -45,7 +42,6 @@ class MemeCollectionViewController: UICollectionViewController {
     }
 
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        print("adjusting to width: \(size.width) height: \(size.height)")
         configureFlowLayout(size)
     }
     override func viewWillDisappear(animated: Bool) {
@@ -81,13 +77,12 @@ class MemeCollectionViewController: UICollectionViewController {
     
         // Configure the cell
         cell.imageView?.image = memes[indexPath.item].memedImage
-        print("top text of memed image: \(memes[indexPath.item].topText)")
     
         return cell
     }
     
     func reloadMemes(){
-        print("collection view got notification")
+
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         memes = appDelegate.memes
         self.collectionView?.reloadData()
@@ -101,51 +96,12 @@ class MemeCollectionViewController: UICollectionViewController {
         if width > height {
             dimension = (width - (5 * space))/6.0
         }
-        
 
-        print( "width = \(width) height = \(height) dimension = \(dimension)")
-
-        
-        
         flowLayout?.minimumLineSpacing = space
         flowLayout?.minimumInteritemSpacing = space
         flowLayout?.itemSize = CGSizeMake(dimension,dimension)
     }
 
 
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
-    
-    }
-    */
-    
-    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
-        navigationController.viewWillAppear(animated)
-    }
 
 }
