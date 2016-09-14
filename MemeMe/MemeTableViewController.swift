@@ -26,40 +26,11 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reloadMemes), name: newMemeNotificationKey, object: nil)
        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         memes = appDelegate.memes
-   /*      self.tableView.reloadData()
-        print(memes.count)
-        for each in memes{
-            print(each.topText,each.bottomText,each.memedImage)
-        }*/
+
     }
-/*    override func viewWillAppear(animated: Bool) {
-  
-        super.viewWillAppear(animated)
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-//        self.navigationItem.leftBarButtonItem = self.editButtonItem()
-//        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
-        
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        memes = appDelegate.memes
-//        self.tableView.reloadData()
-        
- /*       ***take out
-        NSNotificationCenter.defaultCenter().addObserverForName(nil,                                                    object: nil,                                                     queue: nil) {                                                       note in     print(note.name + "\r\n")   }
-        */
-        print(memes.count)
-        for each in memes{
-            print(each.topText,each.bottomText,each.memedImage)
-        }
-    }
-    
- */
+
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-//        NSNotificationCenter.defaultCenter().removeObserver(self, name: newMemeNotificationKey, object: nil)
         
     }
     
@@ -67,10 +38,6 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 
     // MARK: - Table view data source
 
@@ -95,7 +62,6 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
     }
     
     func reloadMemes(){
-        print("got notification")
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         memes = appDelegate.memes
         self.tableView.reloadData()
@@ -107,25 +73,29 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
         
     }
 
-    /*
+  
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
+ 
 
-    /*
+  
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
+            tableView.beginUpdates()
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            appDelegate.memes.removeAtIndex(indexPath.row)
+            reloadMemes()
+            
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+            tableView.endUpdates()
+        }
     }
-    */
+ 
 
     /*
     // Override to support rearranging the table view.

@@ -157,7 +157,8 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         desiredFont = UIFont(name: font, size: size)!
 
     }
-
+    
+   // MARK: Keyboard notifications
     
     func subscribeToKeyboardNotifications(){
 
@@ -197,6 +198,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
         return keyboardSize.CGRectValue().height
     }
+    
     // MARK: Meme functions
     
     func save()  {
@@ -211,8 +213,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         print(appDelegate.memes.count)
         for each in appDelegate.memes{
             print(each.topText,each.bottomText,each.memedImage)
-        } 
-//        dismissViewControllerAnimated(true, completion: nil)
+        }
 
     }
     
@@ -249,7 +250,6 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
             
         }
         presentViewController(activityController, animated: true, completion: nil)
-//        dismissViewControllerAnimated(true, completion: nil)
         
     }
 }

@@ -60,8 +60,6 @@ class FontViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         font = fonts[indexPath.row]
         delegate?.updateFont(self, shouldUseNewFont: font)
-        
-//        navigationController?.popViewControllerAnimated(true)
         dismissViewControllerAnimated(true, completion: nil)
         
         

@@ -11,7 +11,7 @@ import UIKit
 private let reuseIdentifier = "MemeCell"
 
 
-class MemeCollectionViewController: UICollectionViewController,UINavigationControllerDelegate {
+class MemeCollectionViewController: UICollectionViewController {
     var memes: [Meme]!
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
@@ -23,8 +23,8 @@ class MemeCollectionViewController: UICollectionViewController,UINavigationContr
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
-        // Register cell classes & notifications
-//        self.collectionView!.registerClass(MemeCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        // Register for notifications
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reloadMemes), name: newMemeNotificationKey, object: nil)
 
         // create buttons and load data
@@ -50,7 +50,6 @@ class MemeCollectionViewController: UICollectionViewController,UINavigationContr
     }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-//        NSNotificationCenter.defaultCenter().removeObserver(self, name: newMemeNotificationKey, object: nil)
         
     }
     
