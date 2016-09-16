@@ -14,16 +14,16 @@ protocol FontSelector {
 }
 
 protocol FontSelectorDelegate {
-    func updateFont(selector: FontSelector, shouldUseNewFont font: String)
+    func updateFont(_ selector: FontSelector, shouldUseNewFont font: String)
 }
 
 class FontViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FontSelector {
-    var fonts: [String] = UIFont.familyNames()
+    var fonts: [String] = UIFont.familyNames
     var font:String = ""
     var delegate : FontSelectorDelegate?
     @IBOutlet weak var topTextField: UITextField!
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
         super.viewWillAppear(true)
         navigationController?.setNavigationBarHidden(false, animated: true)
@@ -32,16 +32,16 @@ class FontViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     // MARK: Table View Data Source
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        
       return fonts.count
         
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("FontCell")!
-        font = fonts[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FontCell")!
+        font = fonts[(indexPath as NSIndexPath).row]
 
         // Set the name and font
         cell.textLabel?.text = font
@@ -50,17 +50,17 @@ class FontViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return cell
     }
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool
         
     {
         return true
     }
   
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        font = fonts[indexPath.row]
+        font = fonts[(indexPath as NSIndexPath).row]
         delegate?.updateFont(self, shouldUseNewFont: font)
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
         
         
     }

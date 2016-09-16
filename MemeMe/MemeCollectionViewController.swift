@@ -22,73 +22,80 @@ class MemeCollectionViewController: UICollectionViewController {
 
         // Register for notifications
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reloadMemes), name: newMemeNotificationKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadMemes), name: NSNotification.Name(rawValue: newMemeNotificationKey), object: nil)
 
         // create buttons and load data
 //        self.navigationItem.leftBarButtonItem = self.editButtonItem()
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
 
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         memes = appDelegate.memes
         
         
     }
     
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     // set up flow layout
     configureFlowLayout(view.frame.size)
     
     }
 
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         configureFlowLayout(size)
     }
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     func presentMemeEditor(){
-        let editorViewController = storyboard?.instantiateViewControllerWithIdentifier("MemeEditor") as! MemeEditorViewController
-        self.navigationController?.presentViewController(editorViewController, animated: true, completion: nil)
+        let editorViewController = storyboard?.instantiateViewController(withIdentifier: "MemeEditor") as! MemeEditorViewController
+        self.navigationController?.present(editorViewController, animated: true, completion: nil)
         
     }
     // MARK: UICollectionViewDataSource
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
        
         return 1
     }
 
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     
         return memes.count
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! MemeCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MemeCollectionViewCell
     
         // Configure the cell
-        cell.imageView?.image = memes[indexPath.item].memedImage
+        cell.imageView?.image = memes[(indexPath as NSIndexPath).item].memedImage
     
         return cell
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath:IndexPath){
+        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "MemeDetailViewController") as! MemeDetailViewController
+        detailController.meme = memes[(indexPath as NSIndexPath).item]
+        self.navigationController!.pushViewController(detailController, animated: true)
+
+    }
+    
     func reloadMemes(){
 
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         memes = appDelegate.memes
         self.collectionView?.reloadData()
     }
     
-    func configureFlowLayout( size: CGSize){
+    func configureFlowLayout( _ size: CGSize){
         let space: CGFloat = 3.0
         let width = size.width
         let height = size.height
@@ -99,7 +106,7 @@ class MemeCollectionViewController: UICollectionViewController {
 
         flowLayout?.minimumLineSpacing = space
         flowLayout?.minimumInteritemSpacing = space
-        flowLayout?.itemSize = CGSizeMake(dimension,dimension)
+        flowLayout?.itemSize = CGSize(width: dimension,height: dimension)
     }
 
 

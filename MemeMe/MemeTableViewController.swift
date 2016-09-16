@@ -10,7 +10,7 @@ import UIKit
 
 
 class MemeTableViewController: UITableViewController, UINavigationControllerDelegate {
-    private let reuseIdentifier = "MemeTableViewCell"
+    fileprivate let reuseIdentifier = "MemeTableViewCell"
     var memes: [Meme]!
    // MARK: Navigation
     
@@ -20,71 +20,78 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
-        self.navigationItem.leftBarButtonItem = self.editButtonItem()
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reloadMemes), name: newMemeNotificationKey, object: nil)
-       let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadMemes), name: NSNotification.Name(rawValue: newMemeNotificationKey), object: nil)
+       let appDelegate = UIApplication.shared.delegate as! AppDelegate
         memes = appDelegate.memes
 
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
 
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
         return memes.count
     }
 
    
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
 
         // Configure the cell...
-        cell.imageView?.image = memes[indexPath.item].memedImage
+        cell.imageView?.image = memes[(indexPath as NSIndexPath).item].memedImage
 
         return cell
     }
     
     func reloadMemes(){
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         memes = appDelegate.memes
         self.tableView.reloadData()
     }
 
     func presentMemeEditor(){
-        let editorViewController = storyboard?.instantiateViewControllerWithIdentifier("MemeEditor") as! MemeEditorViewController
-        self.navigationController?.presentViewController(editorViewController, animated: true, completion: nil)
+        let editorViewController = storyboard?.instantiateViewController(withIdentifier: "MemeEditor") as! MemeEditorViewController
+        self.navigationController?.present(editorViewController, animated: true, completion: nil)
         
     }
 
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
             // Delete the row from the data source
             tableView.beginUpdates()
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            appDelegate.memes.removeAtIndex(indexPath.row)
-            reloadMemes()
-            
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.memes.remove(at: (indexPath as NSIndexPath).row)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: newMemeNotificationKey), object: self)
+            tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
         }
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath:IndexPath){
+        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "MemeDetailViewController") as! MemeDetailViewController
+        detailController.meme = memes[(indexPath as NSIndexPath).row]
+        self.navigationController!.pushViewController(detailController, animated: true)
+        
+    }
+
  
 
 }
