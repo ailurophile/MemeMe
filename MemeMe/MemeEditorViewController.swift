@@ -233,7 +233,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         memedImage = generateMemedImage()
         let activityController = UIActivityViewController(activityItems: [memedImage!], applicationActivities: nil)
         
-/*        activityController.completionWithItemsHandler = {(activityType, completed:Bool, returnedItems:[AnyObject]?, error: NSError?) in
+        activityController.completionWithItemsHandler = {(activityType, completed:Bool, returnedItems, error) in
             // Return if cancelled             
             if (!completed) {
                 return
@@ -244,11 +244,11 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
             
         }
         present(activityController, animated: true, completion: nil)
-        */
+      
         // ***** temporary until completionwith items handler resolved
-        self.save()
+/*        self.save()
         self.dismiss(animated: true, completion: nil)
-        
+        */
     }
 }
 

@@ -82,9 +82,10 @@
         <scene sceneID="FI0-dG-awM">
             <objects>
                 <collectionViewController id="ehF-dS-y5w" customClass="MemeCollectionViewController" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="P57-ya-AOe">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="P57-ya-AOe">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="9gp-6y-WcF">
                             <size key="itemSize" width="50" height="50"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -102,7 +103,6 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8D2-nI-Yec"/>
                                     </subviews>
                                 </view>
-                                <color key="backgroundColor" red="1" green="0.9920422123" blue="0.1756817846" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="8D2-nI-Yec" secondAttribute="bottom" id="FMD-6n-2oV"/>
                                     <constraint firstAttribute="trailing" secondItem="8D2-nI-Yec" secondAttribute="trailing" id="PGJ-zL-nZG"/>
