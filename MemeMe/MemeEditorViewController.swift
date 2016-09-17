@@ -50,6 +50,8 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         // set text attributes
         prepareTextField(topTextField)
         prepareTextField(bottomTextField)
+        topTextField.textAlignment = NSTextAlignment.center
+        bottomTextField.textAlignment = NSTextAlignment.center
         
         subscribeToKeyboardNotifications()
         navigationController?.setNavigationBarHidden(true, animated: true)
