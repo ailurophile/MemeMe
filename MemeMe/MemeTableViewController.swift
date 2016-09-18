@@ -15,24 +15,19 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
    // MARK: Navigation
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
 
-        self.navigationItem.leftBarButtonItem = self.editButtonItem
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
+        navigationItem.leftBarButtonItem = self.editButtonItem
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadMemes), name: NSNotification.Name(rawValue: newMemeNotificationKey), object: nil)
-       let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         memes = appDelegate.memes
 
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-    }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -58,12 +53,12 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
     func reloadMemes(){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         memes = appDelegate.memes
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
 
     func presentMemeEditor(){
         let editorViewController = storyboard?.instantiateViewController(withIdentifier: "MemeEditorNavigationController")
-        self.navigationController?.present(editorViewController!, animated: true, completion: nil)
+        navigationController?.present(editorViewController!, animated: true, completion: nil)
         
     }
 
@@ -82,7 +77,7 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath:IndexPath){
         let detailController = self.storyboard!.instantiateViewController(withIdentifier: "MemeDetailViewController") as! MemeDetailViewController
         detailController.meme = memes[(indexPath as NSIndexPath).row]
-        self.navigationController!.pushViewController(detailController, animated: true)
+        navigationController!.pushViewController(detailController, animated: true)
         
     }
 

@@ -26,7 +26,7 @@ class MemeCollectionViewController: UICollectionViewController {
 
         // create buttons and load data
 //        self.navigationItem.leftBarButtonItem = self.editButtonItem()
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
 
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         memes = appDelegate.memes
@@ -55,16 +55,10 @@ class MemeCollectionViewController: UICollectionViewController {
     
     func presentMemeEditor(){
         let editorViewController = storyboard?.instantiateViewController(withIdentifier: "MemeEditorNavigationController")
-        self.navigationController?.present(editorViewController!, animated: true, completion: nil)
+        navigationController?.present(editorViewController!, animated: true, completion: nil)
         
     }
     // MARK: UICollectionViewDataSource
-
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-       
-        return 1
-    }
-
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     
@@ -82,9 +76,9 @@ class MemeCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath:IndexPath){
-        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "MemeDetailViewController") as! MemeDetailViewController
+        let detailController = storyboard!.instantiateViewController(withIdentifier: "MemeDetailViewController") as! MemeDetailViewController
         detailController.meme = memes[(indexPath as NSIndexPath).item]
-        self.navigationController!.pushViewController(detailController, animated: true)
+        navigationController!.pushViewController(detailController, animated: true)
 
     }
     
@@ -92,7 +86,7 @@ class MemeCollectionViewController: UICollectionViewController {
 
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         memes = appDelegate.memes
-        self.collectionView?.reloadData()
+        collectionView?.reloadData()
     }
     
     func configureFlowLayout( _ size: CGSize){

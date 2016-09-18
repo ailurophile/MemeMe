@@ -7,7 +7,8 @@
 //
 
 import UIKit
-// globals
+// Constants
+
 let newMemeNotificationKey = "LisaLitchfield.newMemeNotificationKey"
 let DefaultFontSize = CGFloat(17.0) // only used to prevent unwrapping optionals with a ! (Just a compiler satisfier)
 
@@ -52,7 +53,6 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         bottomTextField.textAlignment = NSTextAlignment.center
         
         subscribeToKeyboardNotifications()
-//        navigationController?.setNavigationBarHidden(true, animated: true)
         
     }
     
@@ -77,11 +77,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         dismiss(animated: true, completion: nil)
     }
     
-/*    override var prefersStatusBarHidden : Bool {
-        return true
-    }
- */
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let controller = segue.destination as! FontViewController
         
@@ -117,7 +113,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         imagePickerController.delegate = self
         
         
-        if sender.tag == 1 {
+        if sender == cameraButton {
             sourceType = UIImagePickerControllerSourceType.camera
         }
         else {
