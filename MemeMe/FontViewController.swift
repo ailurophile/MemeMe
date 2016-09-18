@@ -21,14 +21,8 @@ class FontViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var fonts: [String] = UIFont.familyNames
     var font:String = ""
     var delegate : FontSelectorDelegate?
-    @IBOutlet weak var topTextField: UITextField!
+
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-        super.viewWillAppear(true)
-        navigationController?.setNavigationBarHidden(false, animated: true)
-       
-    }
 
     // MARK: Table View Data Source
     
@@ -60,7 +54,7 @@ class FontViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         font = fonts[(indexPath as NSIndexPath).row]
         delegate?.updateFont(self, shouldUseNewFont: font)
-        dismiss(animated: true, completion: nil)
+//        self.dismiss(animated: true, completion: nil)
         
         
     }

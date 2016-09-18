@@ -41,23 +41,17 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-
-        return 1
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
         return memes.count
     }
 
-   
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
 
         // Configure the cell...
         cell.imageView?.image = memes[(indexPath as NSIndexPath).item].memedImage
-
+        cell.textLabel?.text = memes[(indexPath as NSIndexPath).item].topText + "..." + memes[(indexPath as NSIndexPath).item].bottomText
         return cell
     }
     
@@ -68,8 +62,8 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     func presentMemeEditor(){
-        let editorViewController = storyboard?.instantiateViewController(withIdentifier: "MemeEditor") as! MemeEditorViewController
-        self.navigationController?.present(editorViewController, animated: true, completion: nil)
+        let editorViewController = storyboard?.instantiateViewController(withIdentifier: "MemeEditorNavigationController")
+        self.navigationController?.present(editorViewController!, animated: true, completion: nil)
         
     }
 

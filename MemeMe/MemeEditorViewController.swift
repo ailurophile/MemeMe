@@ -33,7 +33,6 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     @IBOutlet weak var bottomTextField: UITextField!
     @IBOutlet weak var topToolbar: UIToolbar!
     @IBOutlet weak var bottomToolbar: UIToolbar!
-    @IBOutlet weak var uncropButton: UIBarButtonItem!
     
     // MARK: Navigation
     
@@ -45,7 +44,6 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
         if imagePickerView.image == nil {
             shareButton.isEnabled = false
-            uncropButton.isEnabled = false
         }
         // set text attributes
         prepareTextField(topTextField)
@@ -54,7 +52,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         bottomTextField.textAlignment = NSTextAlignment.center
         
         subscribeToKeyboardNotifications()
-        navigationController?.setNavigationBarHidden(true, animated: true)
+//        navigationController?.setNavigationBarHidden(true, animated: true)
         
     }
     
@@ -79,9 +77,10 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         dismiss(animated: true, completion: nil)
     }
     
-    override var prefersStatusBarHidden : Bool {
+/*    override var prefersStatusBarHidden : Bool {
         return true
     }
+ */
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let controller = segue.destination as! FontViewController
@@ -105,7 +104,6 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         }
         originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         shareButton.isEnabled = true
-        uncropButton.isEnabled = true
         dismiss(animated: true, completion: nil)
         
     }
@@ -133,11 +131,6 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
 
     }
     
-    @IBAction func uncropImage(_ sender: UIBarButtonItem) {
-        if (originalImage != nil) {
-            imagePickerView.image = originalImage
-        }
-    }
 
     // MARK: Text functions
     
@@ -227,7 +220,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     }
     
     func hideToolbars(_ hide: Bool){
-        topToolbar.isHidden = hide
+        navigationController?.setToolbarHidden(hide, animated: false)
         bottomToolbar.isHidden = hide
     }
 
@@ -247,10 +240,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         }
         present(activityController, animated: true, completion: nil)
       
-        // ***** temporary until completionwith items handler resolved
-/*        self.save()
-        self.dismiss(animated: true, completion: nil)
-        */
+
     }
 }
 

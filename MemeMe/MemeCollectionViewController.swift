@@ -54,8 +54,8 @@ class MemeCollectionViewController: UICollectionViewController {
     }
     
     func presentMemeEditor(){
-        let editorViewController = storyboard?.instantiateViewController(withIdentifier: "MemeEditor") as! MemeEditorViewController
-        self.navigationController?.present(editorViewController, animated: true, completion: nil)
+        let editorViewController = storyboard?.instantiateViewController(withIdentifier: "MemeEditorNavigationController")
+        self.navigationController?.present(editorViewController!, animated: true, completion: nil)
         
     }
     // MARK: UICollectionViewDataSource
