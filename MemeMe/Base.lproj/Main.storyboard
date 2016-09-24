@@ -200,8 +200,18 @@
                             </textField>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zam-KH-T12">
                                 <items>
-                                    <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="ULi-ao-W5S"/>
-                                    <barButtonItem systemItem="camera" id="90A-ML-tHe"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="vnb-NN-Z7g"/>
+                                    <barButtonItem systemItem="camera" id="90A-ML-tHe">
+                                        <connections>
+                                            <action selector="getPhoto:" destination="BYZ-38-t0r" id="0q1-Pt-eO2"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="jON-KY-ZIp"/>
+                                    <barButtonItem title="Uncrop" id="K7Y-AW-zkY">
+                                        <connections>
+                                            <action selector="uncrop:" destination="BYZ-38-t0r" id="PlA-gg-bkV"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="MBa-bl-VDK">
                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     </barButtonItem>
@@ -213,10 +223,10 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="7Lb-Gq-Nyk"/>
                                     <barButtonItem title="Album" id="SAC-Bx-G06">
                                         <connections>
-                                            <action selector="getPhoto:" destination="BYZ-38-t0r" id="CXu-Jz-pwF"/>
+                                            <action selector="getPhoto:" destination="BYZ-38-t0r" id="mty-yP-Pvx"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="Jkx-P6-LV8"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="gGt-39-TCb"/>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -230,7 +240,7 @@
                             <constraint firstItem="6Un-gK-RZk" firstAttribute="top" secondItem="fuS-bK-0gt" secondAttribute="bottom" id="IEt-aB-T9A"/>
                             <constraint firstAttribute="bottomMargin" secondItem="zam-KH-T12" secondAttribute="bottom" id="Qou-EH-F0c"/>
                             <constraint firstItem="fuS-bK-0gt" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Sis-45-FYX"/>
-                            <constraint firstItem="fV5-wp-rRJ" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="40" id="UB1-jV-lKM"/>
+                            <constraint firstItem="fV5-wp-rRJ" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="30" id="UB1-jV-lKM"/>
                             <constraint firstItem="6Un-gK-RZk" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="30" id="VK5-16-rJB"/>
                             <constraint firstItem="fV5-wp-rRJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="ZSb-N9-fAD"/>
                             <constraint firstItem="9ML-9K-7NX" firstAttribute="width" secondItem="fV5-wp-rRJ" secondAttribute="width" id="aem-7A-cFv"/>
@@ -248,7 +258,12 @@
                                 <exclude reference="fuS-bK-0gt"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="IEt-aB-T9A"/>
                                 <exclude reference="VK5-16-rJB"/>
+                                <exclude reference="fha-B2-hKc"/>
+                                <exclude reference="3pa-pT-nLY"/>
+                                <exclude reference="Sis-45-FYX"/>
+                                <exclude reference="srM-j2-FjC"/>
                             </mask>
                         </variation>
                     </view>
@@ -275,6 +290,7 @@
                         <outlet property="shareButton" destination="0gB-RF-M4o" id="Kav-Vq-jRd"/>
                         <outlet property="topTextField" destination="fV5-wp-rRJ" id="uV6-bS-rqb"/>
                         <outlet property="topToolbar" destination="fuS-bK-0gt" id="NpV-3D-XBP"/>
+                        <outlet property="uncropButton" destination="K7Y-AW-zkY" id="hTS-36-HDU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -344,11 +360,7 @@
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jYH-4t-kJ0" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem tag="1" systemItem="camera" id="gMh-wk-NxL">
-                    <connections>
-                        <action selector="getPhoto:" destination="BYZ-38-t0r" id="4aB-rZ-UkJ"/>
-                    </connections>
-                </barButtonItem>
+                <barButtonItem tag="1" systemItem="camera" id="gMh-wk-NxL"/>
             </objects>
             <point key="canvasLocation" x="1102" y="-930"/>
         </scene>

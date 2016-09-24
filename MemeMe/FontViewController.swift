@@ -39,7 +39,7 @@ class FontViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         // Set the name and font
         cell.textLabel?.text = font
-        let size = cell.textLabel?.font.pointSize ?? DefaultFontSize
+        let size = cell.textLabel?.font.pointSize ?? Constants.DefaultFontSize
         cell.textLabel?.font = UIFont(name: font, size: size)
         return cell
     }

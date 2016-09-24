@@ -22,7 +22,7 @@ class MemeCollectionViewController: UICollectionViewController {
 
         // Register for notifications
 
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadMemes), name: NSNotification.Name(rawValue: newMemeNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadMemes), name: NSNotification.Name(rawValue: Constants.newMemeNotificationKey), object: nil)
 
         // create buttons and load data
 //        self.navigationItem.leftBarButtonItem = self.editButtonItem()

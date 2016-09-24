@@ -22,7 +22,7 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
         navigationItem.leftBarButtonItem = self.editButtonItem
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
         
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadMemes), name: NSNotification.Name(rawValue: newMemeNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadMemes), name: NSNotification.Name(rawValue: Constants.newMemeNotificationKey), object: nil)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         memes = appDelegate.memes
 
@@ -68,7 +68,7 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
             tableView.beginUpdates()
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.memes.remove(at: (indexPath as NSIndexPath).row)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: newMemeNotificationKey), object: self)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.newMemeNotificationKey), object: self)
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
         }

@@ -2,8 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>We need to use the camera to create a meme from a new photo.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need to acces the photos to creste a meme from a stored image.</string>
+	<string>We need to acces the photos to create a meme from a stored image.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>

@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import Photos
 // Constants
+struct Constants {
 
-let newMemeNotificationKey = "LisaLitchfield.newMemeNotificationKey"
-let DefaultFontSize = CGFloat(17.0) // only used to prevent unwrapping optionals with a ! (Just a compiler satisfier)
+    static let newMemeNotificationKey = "LisaLitchfield.newMemeNotificationKey"
+    static let DefaultFontSize = CGFloat(17.0) // only used to prevent unwrapping optionals with a ! (Just a compiler satisfier)
+}
 
 class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,  FontSelectorDelegate {
     var sourceType: UIImagePickerControllerSourceType = UIImagePickerControllerSourceType.camera
@@ -34,6 +37,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     @IBOutlet weak var bottomTextField: UITextField!
     @IBOutlet weak var topToolbar: UIToolbar!
     @IBOutlet weak var bottomToolbar: UIToolbar!
+    @IBOutlet weak var uncropButton: UIBarButtonItem!
     
     // MARK: Navigation
     
@@ -45,6 +49,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
         if imagePickerView.image == nil {
             shareButton.isEnabled = false
+            uncropButton.isEnabled = false
         }
         // set text attributes
         prepareTextField(topTextField)
@@ -97,9 +102,11 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
                                  didFinishPickingMediaWithInfo info: [String : Any]){
         if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
             imagePickerView.image = image
+            originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         }
-        originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage
+        
         shareButton.isEnabled = true
+        uncropButton.isEnabled = true
         dismiss(animated: true, completion: nil)
         
     }
@@ -108,10 +115,14 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         dismiss(animated: true, completion: nil)
 
     }
+    
+
+    
     @IBAction func getPhoto(_ sender: UIBarButtonItem) {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
-        
+
+//        let permission = Photos.PHPhotoLibrary.authorizatonStatus()
         
         if sender == cameraButton {
             sourceType = UIImagePickerControllerSourceType.camera
@@ -127,6 +138,9 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
 
     }
     
+    @IBAction func uncrop(_ sender: UIBarButtonItem) {
+        imagePickerView.image = originalImage
+    }
 
     // MARK: Text functions
     
@@ -141,7 +155,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     }
     
     func updateFont(_ selector: FontSelector, shouldUseNewFont font: String) {
-        let size = topTextField.font?.pointSize ?? DefaultFontSize
+        let size = topTextField.font?.pointSize ?? Constants.DefaultFontSize
         desiredFont = UIFont(name: font, size: size)!
 
     }
@@ -197,7 +211,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
         appDelegate.memes.append(meme)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: newMemeNotificationKey), object: self)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.newMemeNotificationKey), object: self)
 
     }
     
