@@ -98,6 +98,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     }
     
    // MARK: Photo functions
+    
     func imagePickerController(_ picker: UIImagePickerController,
                                  didFinishPickingMediaWithInfo info: [String : Any]){
         if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
@@ -121,22 +122,63 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
     @IBAction func getPhoto(_ sender: UIBarButtonItem) {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
-
-//        let permission = Photos.PHPhotoLibrary.authorizatonStatus()
+        imagePickerController.allowsEditing = true
+        let alertController = UIAlertController()
+        alertController.title = "Not Authorized"
+      
         
         if sender == cameraButton {
-            sourceType = UIImagePickerControllerSourceType.camera
+            let cameraPermission = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
+            if  cameraPermission == .authorized {
+                sourceType = UIImagePickerControllerSourceType.camera
+                imagePickerController.sourceType = sourceType
+                present(imagePickerController, animated: true, completion: nil)
+            }
+            else {
+                alertController.message = "You must enable camera access for MemeMe in Settings-Privacy to use this feature"
+                presentAlert(alertController: alertController)
+            }
+            
         }
         else {
+            // sender = album
             sourceType = UIImagePickerControllerSourceType.photoLibrary
+            imagePickerController.sourceType = sourceType
+            let permission = Photos.PHPhotoLibrary.authorizationStatus()
+            switch permission{
+            case .authorized:
+                print("pick image")
+                present(imagePickerController, animated: true, completion: nil)
+            case .notDetermined:
+                print("requesting authorization")
+                PHPhotoLibrary.requestAuthorization({(status: PHAuthorizationStatus)-> Void in
+                    if status == .authorized {
+                        self.present(imagePickerController, animated: true, completion: nil)
+                    }})
+           case .denied:
+                print("denied or undetermined")
+                alertController.message = "You must enable photo album access for MemeMe in Settings-Privacy to use this feature"
+                presentAlert(alertController: alertController)
+            case .restricted:
+                print("restricted")
+                alertController.message = "You are not authorized to enable this feature"
+                presentAlert(alertController: alertController)
+
+            }
+            
         }
         
-        imagePickerController.sourceType = sourceType
-        imagePickerController.allowsEditing = true
-        present(imagePickerController, animated: true, completion: nil)
-        
-
     }
+        
+    func presentAlert(alertController: UIAlertController){
+        
+        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
+            action in self.dismiss(animated: true, completion: nil)}
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
+    
     
     @IBAction func uncrop(_ sender: UIBarButtonItem) {
         imagePickerView.image = originalImage
@@ -150,14 +192,12 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        
         return true;
     }
     
     func updateFont(_ selector: FontSelector, shouldUseNewFont font: String) {
         let size = topTextField.font?.pointSize ?? Constants.DefaultFontSize
         desiredFont = UIFont(name: font, size: size)!
-
     }
     
    // MARK: Keyboard notifications
@@ -226,7 +266,6 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         hideToolbars(false)
         return memedImage
         
-        
     }
     
     func hideToolbars(_ hide: Bool){
@@ -249,7 +288,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
             
         }
         present(activityController, animated: true, completion: nil)
-      
+     
 
     }
 }
