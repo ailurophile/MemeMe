@@ -188,7 +188,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        return true;
+        return true
     }
     
     func updateFont(_ selector: FontSelector, shouldUseNewFont font: String) {
