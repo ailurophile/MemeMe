@@ -129,16 +129,25 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         
         if sender == cameraButton {
             let cameraPermission = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
-            if  cameraPermission == .authorized {
-                sourceType = UIImagePickerControllerSourceType.camera
-                imagePickerController.sourceType = sourceType
+            sourceType = UIImagePickerControllerSourceType.camera
+            imagePickerController.sourceType = sourceType
+            switch cameraPermission{
+            case .authorized:
                 present(imagePickerController, animated: true, completion: nil)
-            }
-            else {
+            case .notDetermined:
+                AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo,completionHandler: { success in
+                    if success{
+                        self.present(imagePickerController, animated: true, completion: nil)
+                    }
+                })
+            case .denied:
                 alertController.message = "You must enable camera access for MemeMe in Settings-Privacy to use this feature"
                 presentAlert(alertController: alertController)
+            case .restricted:
+                alertController.message = "You are not authorized to enable this feature"
+                presentAlert(alertController: alertController)
             }
-            
+
         }
         else {
             // sender = album

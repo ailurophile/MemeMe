@@ -45,8 +45,8 @@ class MemeTableViewController: UITableViewController, UINavigationControllerDele
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
 
         // Configure the cell...
-        cell.imageView?.image = memes[(indexPath as NSIndexPath).item].memedImage
-        cell.textLabel?.text = memes[(indexPath as NSIndexPath).item].topText + "..." + memes[(indexPath as NSIndexPath).item].bottomText
+        cell.imageView?.image = memes[(indexPath as NSIndexPath).row].memedImage
+        cell.textLabel?.text = memes[(indexPath as NSIndexPath).row].topText + "..." + memes[(indexPath as NSIndexPath).row].bottomText
         return cell
     }
     
