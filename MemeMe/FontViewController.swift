@@ -14,7 +14,7 @@ protocol FontSelector {
 }
 
 protocol FontSelectorDelegate {
-    func updateFont(_ selector: FontSelector, shouldUseNewFont font: String)
+    func updateFont( shouldUseNewFont font: String)
 }
 
 class FontViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FontSelector {
@@ -53,7 +53,7 @@ class FontViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         font = fonts[(indexPath as NSIndexPath).row]
-        delegate?.updateFont(self, shouldUseNewFont: font)
+        delegate?.updateFont( shouldUseNewFont: font)
         navigationController!.popViewController(animated: true)
 
         

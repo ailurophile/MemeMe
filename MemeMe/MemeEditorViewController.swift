@@ -200,7 +200,7 @@ class MemeEditorViewController: UIViewController, UITextFieldDelegate, UIImagePi
         return true
     }
     
-    func updateFont(_ selector: FontSelector, shouldUseNewFont font: String) {
+    func updateFont(shouldUseNewFont font: String) {
         let size = topTextField.font?.pointSize ?? Constants.DefaultFontSize
         desiredFont = UIFont(name: font, size: size)!
     }

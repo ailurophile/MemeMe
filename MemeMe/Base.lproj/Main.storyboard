@@ -123,10 +123,10 @@
             </objects>
             <point key="canvasLocation" x="313" y="445"/>
         </scene>
-        <!--Meme Detail View Controller-->
+        <!--Meme Detail-->
         <scene sceneID="6Dp-mp-gx8">
             <objects>
-                <viewController storyboardIdentifier="MemeDetailViewController" title="Meme Detail View Controller" id="qfH-Ua-yAi" customClass="MemeDetailViewController" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MemeDetailViewController" title="Meme Detail" id="qfH-Ua-yAi" customClass="MemeDetailViewController" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="J2y-Yx-hzl"/>
                         <viewControllerLayoutGuide type="bottom" id="PyR-Tr-8eG"/>
@@ -145,6 +145,8 @@
                             <constraint firstAttribute="trailingMargin" secondItem="3D8-Si-ycg" secondAttribute="trailing" id="xSz-Ir-0bG"/>
                         </constraints>
                     </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="memeDetail" destination="3D8-Si-ycg" id="Mgx-jn-rK6"/>
                     </connections>
