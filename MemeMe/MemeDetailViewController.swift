@@ -16,10 +16,10 @@ class MemeDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         memeDetail.image =  meme.memedImage
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(MemeDetailViewController.shareAgain))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareAgain))
     }
     
-    @IBAction func shareAgain(_ sender: UIBarButtonItem) {
+    func shareAgain(_ sender: UIBarButtonItem) {
         
         let activityController = UIActivityViewController(activityItems: [meme.memedImage], applicationActivities: nil)
         present(activityController, animated: true, completion: nil)

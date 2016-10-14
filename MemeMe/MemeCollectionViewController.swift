@@ -25,7 +25,8 @@ class MemeCollectionViewController: UICollectionViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadMemes), name: NSNotification.Name(rawValue: Constants.newMemeNotificationKey), object: nil)
 
         // create buttons and load data
-//        self.navigationItem.leftBarButtonItem = self.editButtonItem()
+//        self.navigationItem.leftBarButtonItem = self.editButtonItem
+//        self.installsStandardGestureForInteractiveMovement = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(MemeTableViewController.presentMemeEditor))
 
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -81,6 +82,7 @@ class MemeCollectionViewController: UICollectionViewController {
         navigationController!.pushViewController(detailController, animated: true)
 
     }
+    
     
     func reloadMemes(){
 
