@@ -1,1 +1,18 @@
-The MemeMe app was developed as part of the iOS Developers' Nanodegree program through Udacity. It allows the user to select a photo from an album or take one with the camera and crop it to select the desired section of the photo.  There is also an uncrop feature in case the user decides the cropping wasn't optimal for the meme.  Top and Bottom text can then be added & a desired font chosen.  The meme can then be shared or saved to an album as desired.   Memes sent since the app launched are visible in table and collection format and can be deleted if so desired.
+#MemeMe
+
+The MemeMe app was developed as part of the iOS Developers' Nanodegree program through Udacity for creating and sharing memes. 
+
+## Requirements
+
+The user must grant the app access to photos and/or camera.
+
+## Features
+
+* select photo from photo album or take a picture with the camera
+* crop and uncrop photo
+* select font for text
+* add text to top and bottom of photo
+* save meme to photo album
+* share meme via text, email, etc.
+* view sent memes in table and collection formats
+* delete sent memes 
